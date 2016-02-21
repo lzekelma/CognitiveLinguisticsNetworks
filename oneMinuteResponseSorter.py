@@ -24,31 +24,31 @@ class SorterClass:
                 sorted_list.append("")
             elif len(each_word) == 1:
                 self.single_letter_count += 1
-                sorted_list.append("error: " + str(self.enum))
-                self.error_list.append("(error: " + str(self.enum) + " " + each_word + ')')
+                sorted_list.append("error:" + str(self.enum))
+                self.error_list.append("(error:" + str(self.enum) + " " + each_word + ')')
                 self.enum += 1
             elif each_word.count(' ') >= 1:
                 self.multi_word_count += 1
-                sorted_list.append("error: " + str(self.enum))
-                self.error_list.append("(error: " + str(self.enum) + " " + each_word + ')')
+                sorted_list.append("error:" + str(self.enum))
+                self.error_list.append("(error:" + str(self.enum) + " " + each_word + ')')
                 self.enum += 1
             elif each_word.isalpha() is False:
                 self.non_alpha_word_count += 1
-                sorted_list.append("error: " + str(self.enum))
-                self.error_list.append("(error: " + str(self.enum) + " " + each_word + ')')
+                sorted_list.append("error:" + str(self.enum))
+                self.error_list.append("(error:" + str(self.enum) + " " + each_word + ')')
                 self.enum += 1
             elif d.check(each_word) is False:
                 self.non_word_count += 1
-                sorted_list.append("error: " + str(self.enum))
-                self.error_list.append("(error: " + str(self.enum) + " " + each_word + ')')
+                sorted_list.append("error:" + str(self.enum))
+                self.error_list.append("(error:" + str(self.enum) + " " + each_word + ')')
                 self.enum += 1
             elif d.check(each_word):
                 self.actual_word_count += 1
                 sorted_list.append(each_word)
             else:
                 self.other_count += 1
-                sorted_list.append("error: " + str(self.enum))
-                self.error_list.append("(error: " + str(self.enum) + " " + each_word + ')')
+                sorted_list.append("error:" + str(self.enum))
+                self.error_list.append("(error:" + str(self.enum) + " " + each_word + ')')
 
         sorted_string = '||'.join(sorted_list)
         return sorted_string
