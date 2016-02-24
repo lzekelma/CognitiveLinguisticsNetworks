@@ -16,32 +16,34 @@ class NetworkClass:
 
         # questions, language and subject
         language = each_row[0]
-        if each_row[12] == '':
+        if each_row[12] == '' or each_row[12] == ' ':
             subject = self.actual_row_count
         else:
             subject = each_row[12] 
+        
         finished = each_row[10]
-        if each_row[15] == '':
+        
+        if each_row[15] == '' or each_row[15] == ' ':
             question3 = '0'
         else:
             question3 = each_row[15]  
         
-        if each_row[16] == '':
+        if each_row[16] == '' or each_row[16] == ' ':
             question4 = '0'
         else:  
             question4 = each_row[16]  
         
-        if each_row[17] == '':
+        if each_row[17] == '' or each_row[17] == ' ':
             question5 = '0'
         else:
             question5 = each_row[17]
 
-        if each_row[18] == '':
+        if each_row[18] == '' or each_row[18] == ' ':
             question6 = '0'
         else: 
             question6 = each_row[18]
 
-        if each_row[19] == '':
+        if each_row[19] == '' or each_row[19] == ' ':
             question7 = '0'
         else:
             question7 = each_row[19].replace(" ", "_")
