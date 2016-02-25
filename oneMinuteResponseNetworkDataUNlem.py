@@ -229,6 +229,7 @@ class NetworkClass:
         for i in range(len(times)):
             times[i] = times[i].split(",")[0]
 
+        
 
         for i in range(len(words)):
             for j in range(i+1, len(words)):
@@ -237,6 +238,9 @@ class NetworkClass:
                 output_string = " ".join([str(subject), language, finished, str(question3), str(question4), str(question5), str(question6), str(question7), str(responselength), words[i], words[j], str(i+1), str(j+1), times[i], times[j], str(int(times[j]) - int(times[i])), str(vac)])
                 output_file.write(output_string + "\n")
                 #sys.exit(0)
+
+
+
         return True
 
 
@@ -250,7 +254,9 @@ class NetworkClass:
 
 
         output_file = open("OutputData/One_Minute_Responses_Network_Data_UNlemmatized.tsv","w")
-
+        firstline = " ". join(["subject", "language", "finished", "q3", "q4", "q5", "q6", "q7", "total", "word:A", "word:B", "index:A", "index:B", "time:A", "time:B", "time:B-A", "VAC"])
+        output_file.write(firstline + "\n")
+        
         row_index = 0
         for each_row in one_minute_data:
             if row_index == 0 or row_index ==1:

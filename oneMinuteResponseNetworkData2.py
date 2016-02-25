@@ -250,6 +250,8 @@ class NetworkClass:
 
 
         output_file = open("OutputData/One_Minute_Responses_Network_Data.tsv","w")
+        firstline = " ". join(["subject", "language", "finished", "q3", "q4", "q5", "q6", "q7", "total", "word:A", "word:B", "index:A", "index:B", "time:A", "time:B", "time:B-A", "VAC"])
+        output_file.write(firstline + "\n")
 
         row_index = 0
         for each_row in one_minute_data:
