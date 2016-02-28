@@ -4,37 +4,37 @@ def readinparameter():
     prompt = '> '
 
 
-    print 'Which group/language do you want? (case-sensitive)\n\t'
-    group = raw_input(prompt)
+    print ('Which group/language do you want? (case-sensitive)\n\t')
+    group = input(prompt)
 
     # print 'How many people do you want from that ?\n\t'
-    # num = raw_input(prompt)
-    print 'Do you want people who finished or not finished?\n\tOptions: "finished", "not finished", "both"'
-    isfinished = raw_input(prompt)
+    # num = input(prompt)
+    print ('Do you want people who finished or not finished?\n\tOptions: "finished", "not finished", "both"')
+    isfinished = input(prompt)
 
     while isfinished not in ["finished", "not finished", "both"]:
-        print '\nInvalid input!\n'
-        print 'Do you want people who finished or not finished?\n\tOptions: "finished", "not finished", "both"'
-        isfinished = raw_input(prompt)
+        print ('\nInvalid input!\n')
+        print ('Do you want people who finished or not finished?\n\tOptions: "finished", "not finished", "both"')
+        isfinished = input(prompt)
     
 
-    print 'Which VAC do you want? (case-sensitive)\n\t'
-    vac = raw_input(prompt)
+    print ('Which VAC do you want? (case-sensitive)\n\t')
+    vac = input(prompt)
 
     
 
     # while group not in ["distance", "time", "both"]:
     #     print '\nInvalid matrix type!\n'
     #     print 'Which matrix do you want?\n\tOptions: "distance", "time", "both"'
-    #     mode = raw_input(prompt)
+    #     mode = input(prompt)
 
-    print 'Which matrix do you want?\n\tOptions: "distance", "time", "both"'
-    mode = raw_input(prompt)
+    print ('Which matrix do you want?\n\tOptions: "distance", "time", "both"')
+    mode = input(prompt)
 
     while mode not in ["distance", "time", "both"]:
-        print '\nInvalid matrix type!\n'
-        print 'Which matrix do you want?\n\tOptions: "distance", "time", "both"'
-        mode = raw_input(prompt)
+        print ('\nInvalid matrix type!\n')
+        print ('Which matrix do you want?\n\tOptions: "distance", "time", "both"')
+        mode = input(prompt)
     
     return group, mode, vac, isfinished
     
@@ -128,11 +128,11 @@ def main():
 
 
 
-    print words
+    print (words)
     # print distances
     # print time_distances
-    print "The subject of the person is {}".format(subject)
-    print "The last line of the vac is at line {} in the file".format(line_num)
+    print ("The subject of the person is {}".format(subject))
+    print ("The last line of the vac is at line {} in the file".format(line_num))
 
 
     # output distance matrix data
