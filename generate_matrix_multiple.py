@@ -1,4 +1,4 @@
-import sys
+import sys, math
 
 def findindex(mylist, myitem):
     for i in range(len(mylist)):
@@ -104,7 +104,8 @@ def matrixOfOnePerson(line, infile):
         
         time_matrix.append(['0'])
         for i in range(start, start + len(words) - row_num - 1):
-            time_matrix[-1].append(str(1.0/int(time_distances[i])))
+
+            time_matrix[-1].append(str(1.0/math.log10(abs(int(time_distances[i])))))
         
         start = start + len(words) - row_num - 1
 
