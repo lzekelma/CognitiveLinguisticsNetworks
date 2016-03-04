@@ -93,7 +93,7 @@ def matrixOfOnePerson(line, infile):
             matrix.append(['0', '1'])
 
         else:
-            matrix[-1].append(str(dis))
+            matrix[-1].append(str(1.0/dis))
 
     matrix.append(['0'])
 
@@ -104,7 +104,7 @@ def matrixOfOnePerson(line, infile):
         
         time_matrix.append(['0'])
         for i in range(start, start + len(words) - row_num - 1):
-            time_matrix[len(time_matrix)-1].append(time_distances[i])
+            time_matrix[-1].append(str(1.0/int(time_distances[i])))
         
         start = start + len(words) - row_num - 1
 
@@ -215,8 +215,8 @@ def main():
     infile = open('OutputData/One_Minute_Responses_Network_Data.tsv', 'r')
     outfile1 = open('OutputData/matrixData/' + group + '_'+ isfinished +'_' + vac + '_distance_matrix.tsv', 'w')
     outfile2 = open('OutputData/matrixData/' + group + '_'+ isfinished +'_' + vac + '_time_matrix.tsv', 'w')
-    outfile3 = open('OutputData/matrixData/' + group + '_'+ isfinished +'_' + vac + '_distance_matrix_average.tsv', 'w')
-    outfile4 = open('OutputData/matrixData/' + group + '_'+ isfinished +'_' + vac + '_time_matrix_average.tsv', 'w')
+    outfile3 = open('OutputData/matrixData/' + group + '_'+ isfinished +'_' + vac + '_distance_matrix_sum.tsv', 'w')
+    outfile4 = open('OutputData/matrixData/' + group + '_'+ isfinished +'_' + vac + '_time_matrix_sum.tsv', 'w')
 
     time_matrix_total = []
     dis_matrix_total = []
@@ -303,38 +303,48 @@ def main():
         
         # if count == 10000:
         #     break
-    # calculate mean
-    dis_matrix_average = []
-    time_matrix_average = []
+
+    # remove error words
+
+    error_idx = []
     for i in range(len(words_total)):
-        dis_matrix_average.append([])
-        time_matrix_average.append([])
+        if words_total[i][:5] == 'error':
+            idx = i - len(error_idx)
+            error_idx.append(idx)
+
+    for idx in error_idx:
+        words_total.pop(idx)
+
+        dis_matrix_total.pop(idx)
+        for row in dis_matrix_total:
+            row.pop(idx)
+
+        time_matrix_total.pop(idx)
+        for row in time_matrix_total:
+            row.pop(idx)
+
+
+
+    # calculate sum
+    dis_matrix_sum = []
+    time_matrix_sum = []
+    for i in range(len(words_total)):
+        dis_matrix_sum.append([])
+        time_matrix_sum.append([])
         for j in range(len(words_total)):
-            count = 0
             sum1 = 0
             
             for number in dis_matrix_total[i][j]:
-                if number != "0":
-                    count+=1
-                    sum1 += int(number)
-            if count == 0:
-                avg = 0
-            else:
-                avg = sum1/float(count)
-            dis_matrix_average[-1].append(str(avg))
+                sum1 += float(number)
+
+            dis_matrix_sum[-1].append(str(sum1))
             
 
-            count = 0
             sum1 = 0
             for number in time_matrix_total[i][j]:
-                if number != "0":
-                    count += 1
-                    sum1 += int(number)
-            if count == 0:
-                avg = 0
-            else:
-                avg = sum1/float(count)
-            time_matrix_average[-1].append(str(avg))
+                sum1 += float(number)
+
+            time_matrix_sum[-1].append(str(sum1))
     
 
     # output data to files
@@ -347,6 +357,8 @@ def main():
     mylen = len(dis_matrix_total[0][1])
     for i in range(len(words_total)):
         for j in range(len(words_total)):
+
+            # if the lengths of each cell are different, exit and print out error
             if i != j and len(dis_matrix_total[i][j]) != mylen:
 
                 print ("diff length")
@@ -365,8 +377,8 @@ def main():
         
         outfile1.write(words_total[i] + "\t" + "\t".join(dis_matrix_total[i]) + "\n")
         outfile2.write(words_total[i] + "\t" + "\t".join(time_matrix_total[i]) + "\n")
-        outfile3.write(words_total[i] + "\t" + "\t".join(dis_matrix_average[i]) + "\n")
-        outfile4.write(words_total[i] + "\t" + "\t".join(time_matrix_average[i]) + "\n")
+        outfile3.write(words_total[i] + "\t" + "\t".join(dis_matrix_sum[i]) + "\n")
+        outfile4.write(words_total[i] + "\t" + "\t".join(time_matrix_sum[i]) + "\n")
 
 
 
