@@ -235,7 +235,7 @@ def main():
         vac_curr = row[16]
         finished_or_not = row[2]
 
-        if isfinished == 'finished':
+        if isfinished == 'not_finished':
             if finished_or_not == '1' or group_curr != group or vac_curr != vac:
                 continue
             else:
@@ -257,7 +257,7 @@ def main():
                         words, dis_matrix, time_matrix, line = matrixOfOnePerson(line, infile)
 
 
-        elif isfinished == 'not_finished':
+        elif isfinished == 'finished':
             if finished_or_not == '0' or group_curr != group or vac_curr != vac:
                 continue
             else:
