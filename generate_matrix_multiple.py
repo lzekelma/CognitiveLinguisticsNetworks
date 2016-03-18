@@ -36,7 +36,6 @@ def readinparameter():
     return group, vac, isfinished
 
 def matrixOfOnePerson(line, infile):
-    # line_num = 0
 
     distances = []
     time_distances = []
@@ -63,7 +62,6 @@ def matrixOfOnePerson(line, infile):
     time_distances.append(time_dis)
 
     for line in infile:
-        # line_num += 1
 
         row = line.split(" ")
         row[16] = row[16].strip()
@@ -105,7 +103,7 @@ def matrixOfOnePerson(line, infile):
         time_matrix.append(['0'])
         for i in range(start, start + len(words) - row_num - 1):
 
-            time_matrix[-1].append(str(1.0/math.log10(abs(int(time_distances[i])))))
+            time_matrix[-1].append(str(1.0/math.log10(int(time_distances[i]))))
         
         start = start + len(words) - row_num - 1
 
@@ -201,17 +199,7 @@ def combineMatrices(dis_matrix_total, time_matrix_total, words_total, matrix, ti
             time_matrix_total[idx1][idx2].append(time_matrix[i][j-i-1])
 
 
-def main():
-    group, vac, isfinished = readinparameter()
-    
-    # print group, mode, vac, isfinished
-
-    infile = open('OutputData/One_Minute_Responses_Network_Data.tsv', 'r')
-    for line in infile:
-        pass
-    lastLine = line
-    infile.close()
-
+def generateMatrices(group, vac, isfinished, lastLine, error_lines):
 
     infile = open('OutputData/One_Minute_Responses_Network_Data.tsv', 'r')
     outfile1 = open('OutputData/matrixData/' + group + '_'+ isfinished +'_' + vac + '_distance_matrix.tsv', 'w')
@@ -223,12 +211,13 @@ def main():
     dis_matrix_total = []
     words_total = []
 
-
-    count = 0
     for line in infile:
-        count+=1
         
         row = line.split(" ")
+
+        if row[0] in error_lines: # skip lines with non-monotonic time
+            continue
+
         row[16] = row[16].strip()
         subject_curr = row[0]
         group_curr = row[1]
@@ -246,6 +235,10 @@ def main():
                     if line == lastLine:
                         break
                     row = line.split(" ")
+
+                    if row[0] in error_lines: # skip lines with non-monotonic time
+                        break
+
                     row[16] = row[16].strip()
                     subject_curr = row[0]
                     group_curr = row[1]
@@ -267,6 +260,10 @@ def main():
                     if line == lastLine:
                         break
                     row = line.split(" ")
+
+                    if row[0] in error_lines: # skip lines with non-monotonic time
+                        break
+
                     row[16] = row[16].strip()
                     subject_curr = row[0]
                     group_curr = row[1]
@@ -288,6 +285,10 @@ def main():
                     if line == lastLine:
                         break
                     row = line.split(" ")
+
+                    if row[0] in error_lines: # skip lines with non-monotonic time
+                        break
+
                     row[16] = row[16].strip()
                     subject_curr = row[0]
                     group_curr = row[1]
@@ -301,9 +302,7 @@ def main():
 
         combineMatrices(dis_matrix_total, time_matrix_total, words_total, \
             dis_matrix, time_matrix, words)
-        
-        # if count == 10000:
-        #     break
+
 
     # remove error words
 
@@ -314,6 +313,26 @@ def main():
             error_idx.append(idx)
 
     for idx in error_idx:
+        words_total.pop(idx)
+
+        dis_matrix_total.pop(idx)
+        for row in dis_matrix_total:
+            row.pop(idx)
+
+        time_matrix_total.pop(idx)
+        for row in time_matrix_total:
+            row.pop(idx)
+
+
+    # remove duplicate words
+
+    dup_idx = []
+    for i in range(len(words_total)):
+        if words_total[i] in words_total[:i]:
+            idx = i - len(dup_idx)
+            dup_idx.append(idx)
+
+    for idx in dup_idx:
         words_total.pop(idx)
 
         dis_matrix_total.pop(idx)
@@ -350,16 +369,17 @@ def main():
 
     # output data to files
 
-    outfile1.write("" + "\t" + "\t".join(words_total) + "\n")
-    outfile2.write("" + "\t" + "\t".join(words_total) + "\n")
-    outfile3.write("" + "\t" + "\t".join(words_total) + "\n")
-    outfile4.write("" + "\t" + "\t".join(words_total) + "\n")
+    outfile1.write("verb" + "\t" + "\t".join(words_total) + "\n")
+    outfile2.write("verb" + "\t" + "\t".join(words_total) + "\n")
+    outfile3.write("verb" + "\t" + "\t".join(words_total) + "\n")
+    outfile4.write("verb" + "\t" + "\t".join(words_total) + "\n")
 
+
+    # if the lengths of each cell are different, exit and print out error
     mylen = len(dis_matrix_total[0][1])
     for i in range(len(words_total)):
         for j in range(len(words_total)):
 
-            # if the lengths of each cell are different, exit and print out error
             if i != j and len(dis_matrix_total[i][j]) != mylen:
 
                 print ("diff length")
@@ -389,6 +409,46 @@ def main():
     outfile2.close()
     outfile3.close()
     outfile4.close()
+
+
+def main():
+
+    groups = ["English", "Spanish", "German"]
+
+    infile = open('OutputData/One_Minute_Responses_Network_Data.tsv', 'r')
+    vacs = [] # array of all the vacs
+    error_lines = [] # lines with nonmonotonic time
+
+    infile.readline()
+    for line in infile:
+        row = line.split(" ")
+        
+        row[16] = row[16].strip()   
+
+        if row[16] not in vacs:
+            vacs.append(row[16])
+
+        if int(row[15]) <= 0:
+            if row[0] not in error_lines:
+                error_lines.append(row[0])
+
+    lastLine = line
+    infile.close()
+
+    # print (vacs)
+    # print (groups)
+    # print (len(error_lines))
+    # print (error_lines)
+    # sys.exit(0)
+
+    # group, vac, isfinished = readinparameter()
+    # print group, mode, vac, isfinished
+
+
+    for group in groups:
+        for vac in vacs:
+            generateMatrices(group, vac, "finished", lastLine, error_lines)
+
 
 
 if __name__ == "__main__":
