@@ -96,6 +96,7 @@ def matrixOfOnePerson(line, infile):
     matrix.append(['0'])
 
 
+
     time_matrix = []
     start = 0
     for row_num in range(len(words)):
@@ -107,7 +108,6 @@ def matrixOfOnePerson(line, infile):
         
         start = start + len(words) - row_num - 1
 
-    # time_matrix.append(['0'])
 
     return words, matrix, time_matrix, line
 
@@ -168,6 +168,7 @@ def combineMatrices(dis_matrix_total, time_matrix_total, words_total, matrix, ti
             time_matrix_total[-1].append(["0"])
 
 
+
     
     # append 0 for each cell in the matrix at first
     for i in range(len(words_total)):
@@ -177,7 +178,12 @@ def combineMatrices(dis_matrix_total, time_matrix_total, words_total, matrix, ti
             else:
                 dis_matrix_total[i][j].append("0")
                 time_matrix_total[i][j].append("0")
-
+    
+    # for ii in range(len(dis_matrix_total)):
+    #     print (dis_matrix_total[ii])
+    # for ii in range(len(time_matrix_total)):
+    #     print (time_matrix_total[ii])
+    # sys.exit(0)
 
     # replace the 0 at the tail of each cell with actual value
     for i in range(len(words)):
@@ -193,10 +199,10 @@ def combineMatrices(dis_matrix_total, time_matrix_total, words_total, matrix, ti
             idx2 = findindex(words_total, word2)
 
             dis_matrix_total[idx1][idx2].pop()
-            dis_matrix_total[idx1][idx2].append(matrix[i][j-i-1])
+            dis_matrix_total[idx1][idx2].append(matrix[i][j-i])
 
             time_matrix_total[idx1][idx2].pop()
-            time_matrix_total[idx1][idx2].append(time_matrix[i][j-i-1])
+            time_matrix_total[idx1][idx2].append(time_matrix[i][j-i])
 
 
 def generateMatrices(group, vac, isfinished, lastLine, error_lines):
@@ -229,6 +235,8 @@ def generateMatrices(group, vac, isfinished, lastLine, error_lines):
                 continue
             else:
                 words, dis_matrix, time_matrix, line = matrixOfOnePerson(line, infile)
+                combineMatrices(dis_matrix_total, time_matrix_total, words_total, \
+            dis_matrix, time_matrix, words)
 
 
                 while True:
@@ -248,6 +256,8 @@ def generateMatrices(group, vac, isfinished, lastLine, error_lines):
                         break
                     else:
                         words, dis_matrix, time_matrix, line = matrixOfOnePerson(line, infile)
+                        combineMatrices(dis_matrix_total, time_matrix_total, words_total, \
+            dis_matrix, time_matrix, words)
 
 
         elif isfinished == 'finished':
@@ -255,6 +265,8 @@ def generateMatrices(group, vac, isfinished, lastLine, error_lines):
                 continue
             else:
                 words, dis_matrix, time_matrix, line = matrixOfOnePerson(line, infile)
+                combineMatrices(dis_matrix_total, time_matrix_total, words_total, \
+            dis_matrix, time_matrix, words)
 
                 while True:
                     if line == lastLine:
@@ -273,6 +285,8 @@ def generateMatrices(group, vac, isfinished, lastLine, error_lines):
                         break
                     else:
                         words, dis_matrix, time_matrix, line = matrixOfOnePerson(line, infile)
+                        combineMatrices(dis_matrix_total, time_matrix_total, words_total, \
+            dis_matrix, time_matrix, words)
 
 
         else:
@@ -280,6 +294,8 @@ def generateMatrices(group, vac, isfinished, lastLine, error_lines):
                 continue
             else:
                 words, dis_matrix, time_matrix, line = matrixOfOnePerson(line, infile)
+                combineMatrices(dis_matrix_total, time_matrix_total, words_total, \
+            dis_matrix, time_matrix, words)
 
                 while True:
                     if line == lastLine:
@@ -298,10 +314,11 @@ def generateMatrices(group, vac, isfinished, lastLine, error_lines):
                         break
                     else:
                         words, dis_matrix, time_matrix, line = matrixOfOnePerson(line, infile)
-
-
-        combineMatrices(dis_matrix_total, time_matrix_total, words_total, \
+                        combineMatrices(dis_matrix_total, time_matrix_total, words_total, \
             dis_matrix, time_matrix, words)
+
+
+        
 
 
     # remove error words
@@ -443,6 +460,7 @@ def main():
 
     # group, vac, isfinished = readinparameter()
     # print group, mode, vac, isfinished
+
 
 
     for group in groups:
